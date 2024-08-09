@@ -46,3 +46,34 @@ spring.jpa.properties.hibernate.format_sql=true
 * __DATABASE__ - definição de qual banco iremos utilizar, usuário e senha de acesso
 * __H2 CLIENT__ - Ativação do cliente e definindo em browser para facilitar acesso
 * __JPA__ - configuração do jpa onde gera tabelas automaticamente, configura para interagir com bando sql compativel com H2 e configuração para motrar os logs formatados de interações com o banco utilizado
+
+## Criando Model
+O model é o modelo da nossa tabelo no banco
+
+```java
+@Entity
+@Table(name = "To-do")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TodoList {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    @Column(name = "Tarefa")
+    String task;
+    @Column(name = "Categoria")
+    String category;
+}
+```
+
+__@Entity__ diz ao spring que essa classe sera a entidade do banco<br>
+__@table__ define propriedades do banco, no nosso caso o nome<br>
+__@Data__ anotação do Lombok para gerar nossos getter e setter<br>
+__@AllArgsContructor__ gera um contrutor com todos os argumentos pelo Lombok<br>
+__@NoArgsContructor__ gera um contrutor sem argumentos pelo Lombok<br>
+
+__@Id__ diz qual atributo sera o id da nossa tabela<br>
+__@GeneratedValue__ diz qual regra de geração de id sera utilizado (IDENTITY para ids sequenciais e UUID para geração aleatoria de String)<br>
+__@Column define__ o nome da coluna de nossa tabela<br>
