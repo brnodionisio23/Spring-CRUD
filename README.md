@@ -77,3 +77,12 @@ __@NoArgsContructor__ gera um contrutor sem argumentos pelo Lombok<br>
 __@Id__ diz qual atributo sera o id da nossa tabela<br>
 __@GeneratedValue__ diz qual regra de geração de id sera utilizado (IDENTITY para ids sequenciais e UUID para geração aleatoria de String)<br>
 __@Column define__ o nome da coluna de nossa tabela<br>
+
+## Criando Repository
+Essa camada tem a responsabilidade de ser a ponte entre a aplicação e o nosso banco de dados utilizando o JPA (Java Persistence Application) possuindo metodos de interação com a nossa tabela abstraindo toda a complexidade do JDBC
+
+``` java
+public interface TodoListRepository extends JpaRepository<TodoList, Long> {}
+```
+
+Para o JPA entrar em ação precisamos passar o __tipo do dado__, no caso nossa tabela, e o __tipo do identificador__ desse dado
