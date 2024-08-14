@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoList {
+public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
