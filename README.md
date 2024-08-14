@@ -56,7 +56,7 @@ O model é o modelo da nossa tabelo no banco
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoList {
+public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,7 +82,7 @@ __@Column define__ o nome da coluna de nossa tabela<br>
 Essa camada tem a responsabilidade de ser a ponte entre a aplicação e o nosso banco de dados utilizando o JPA (Java Persistence Application) possuindo metodos de interação com a nossa tabela abstraindo toda a complexidade do JDBC
 
 ``` java
-public interface TodoListRepository extends JpaRepository<TodoList, Long> {}
+public interface TodoRepository extends JpaRepository<Todo, Long> {}
 ```
 
 Para o JPA entrar em ação precisamos passar o __tipo do dado__, no caso nossa tabela, e o __tipo do identificador__ desse dado
