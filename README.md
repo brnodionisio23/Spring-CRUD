@@ -48,15 +48,25 @@ spring.jpa.properties.hibernate.format_sql=true
 * __JPA__ - configuração do jpa onde gera tabelas automaticamente, configura para interagir com bando sql compativel com H2 e configuração para motrar os logs formatados de interações com o banco utilizado
 
 ## Criando Model
-O model é o modelo da nossa tabelo no banco
+O model (entities) é o modelo da nossa tabelo no banco
+
+* Sugestão de implementação
+  * Atributos basicos
+  * Associações
+  * Contrutores
+  * Getters e Setters
+  * hashCode & equals
+  * Serializable
+
 
 ```java
 @Entity
 @Table(name = "To-do")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Todo {
+@AllArgsConstructor
+public class Todo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,6 +77,8 @@ public class Todo {
     String category;
 }
 ```
+
+__Serializable__ tem a finalidade de permitir o trafego dos dados pela rede
 
 __@Entity__ diz ao spring que essa classe sera a entidade do banco<br>
 __@table__ define propriedades do banco, no nosso caso o nome<br>
