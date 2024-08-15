@@ -97,4 +97,6 @@ Essa camada tem a responsabilidade de ser a ponte entre a aplicação e o nosso 
 public interface TodoRepository extends JpaRepository<Todo, Long> {}
 ```
 
+* Essa classe não necessita da anottation __@Service__ pois ´ja é herdada do JpaRepository
+
 Para o JPA entrar em ação precisamos passar o __tipo do dado__, no caso nossa tabela, e o __tipo do identificador__ desse dado
