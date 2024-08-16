@@ -92,6 +92,14 @@ public class Category implements Serializable {
 
     @Column(name = "nome", nullable = false)
     private String name;
+
+  @ManyToMany
+  @JoinTable(
+          name = "Category_Todo",
+          joinColumns = @JoinColumn(name = "category_id"),
+          inverseJoinColumns = @JoinColumn(name = "todo_id")
+  )
+  private Set<Todo> todo = new HashSet<>();
 }
 ```
 
@@ -102,10 +110,18 @@ __@table__ define propriedades do banco, no nosso caso o nome<br>
 __@Data__ anotação do Lombok para gerar nossos getter e setter<br>
 __@AllArgsContructor__ gera um contrutor com todos os argumentos pelo Lombok<br>
 __@NoArgsContructor__ gera um contrutor sem argumentos pelo Lombok<br>
+__@JoinTable__ tem a função de definir uma tabela intermediária entre as tabela relacionadas ManyToMany<br>
 
 __@Id__ diz qual atributo sera o id da nossa tabela<br>
 __@GeneratedValue__ diz qual regra de geração de id sera utilizado (IDENTITY para ids sequenciais e UUID para geração aleatoria de String)<br>
 __@Column__ define caracteristicas da coluna de nossa tabela<br>
+
+### Modelo Entidade Relacionamento
+
+__@OneToOne__ Esta anotação é usada para especificar um relacionamento unidirecional entre duas entidades, onde uma entidade tem uma referência para outra entidade. Por exemplo, um **usuário pode ter uma conta bancária**. <br> <br>
+__@OneToMany__ Esta anotação é usada para especificar um relacionamento unidirecional de um para muitos entre duas entidades, onde uma entidade tem uma referência para várias entidades. Por exemplo, **um professor pode ter vários alunos**. <br><br>
+__@ManyToOne__ Esta anotação é usada para especificar um relacionamento unidirecional de muitos para um entre duas entidades, onde várias entidades têm uma referência para uma entidade. Por exemplo, **vários alunos podem ter o mesmo professor**. <br><br>
+__@ManyToMany__ Esta anotação é usada para especificar um relacionamento bidirecional de muitos para muitos entre duas entidades, onde várias entidades têm referências para várias entidades. Por exemplo, **vários alunos podem ter vários professores**. <br> <br>
 
 ## Criando Repository
 Essa camada tem a responsabilidade de ser a ponte entre a aplicação e o nosso banco de dados utilizando o JPA (Java Persistence Application) possuindo metodos de interação com a nossa tabela abstraindo toda a complexidade do JDBC
