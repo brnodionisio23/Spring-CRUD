@@ -8,20 +8,16 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "To-do")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Todo implements Serializable {
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column(name = "Tarefa")
-    String task;
-
-    @Column(name = "Categoria")
-    String category;
+    @Column(name = "nome", nullable = false)
+    private String name;
 }

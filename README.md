@@ -78,6 +78,23 @@ public class Todo implements Serializable {
 }
 ```
 
+```java
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Category implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nome", nullable = false)
+    private String name;
+}
+```
+
 __Serializable__ tem a finalidade de permitir o trafego dos dados pela rede
 
 __@Entity__ diz ao spring que essa classe sera a entidade do banco<br>
@@ -88,7 +105,7 @@ __@NoArgsContructor__ gera um contrutor sem argumentos pelo Lombok<br>
 
 __@Id__ diz qual atributo sera o id da nossa tabela<br>
 __@GeneratedValue__ diz qual regra de geração de id sera utilizado (IDENTITY para ids sequenciais e UUID para geração aleatoria de String)<br>
-__@Column define__ o nome da coluna de nossa tabela<br>
+__@Column__ define caracteristicas da coluna de nossa tabela<br>
 
 ## Criando Repository
 Essa camada tem a responsabilidade de ser a ponte entre a aplicação e o nosso banco de dados utilizando o JPA (Java Persistence Application) possuindo metodos de interação com a nossa tabela abstraindo toda a complexidade do JDBC
