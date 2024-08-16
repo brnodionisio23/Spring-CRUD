@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,4 +22,12 @@ public class Category implements Serializable {
 
     @Column(name = "nome", nullable = false)
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Category_Todo",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "todo_id")
+    )
+    private Set<Todo> todo = new HashSet<>();
 }
