@@ -133,3 +133,46 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {}
 * Essa classe não necessita da anottation __@Service__ pois ´ja é herdada do JpaRepository
 
 Para o JPA entrar em ação precisamos passar o __tipo do dado__, no caso nossa tabela, e o __tipo do identificador__ desse dado
+
+## Criação da camada Service
+Esta camada é responsável pela lógica da aplicação
+
+```java
+@Service
+public class CategoryService {
+
+    @Autowired
+    private CategoryRepository repository;
+
+    public Category insert(Category obj){
+        return repository.save(obj);
+    }
+}
+```
+
+* Criando uma nova instancia do repositório refente podemos utilizar os métodos JPA em nossa aplicação
+
+__@Autowired__ anotação do spring para injetar dependencias
+
+## Controller
+* Camada responsável pelos endpoints da nossa aplicação, são pontos de acesso para troca de dados na nossa aplicação entre diferentes serviços como por exemplo: cliente servidor.
+
+```java
+@RestController
+@RequestMapping(value = "/categories")
+public class CategoryController {
+
+    @Autowired
+    private CategoryService service;
+
+    @PostMapping("/add")
+    public ResponseEntity<Category> insert(@RequestBody Category obj) {
+        Category newObj = service.insert(obj);
+        return new ResponseEntity<>(newObj, HttpStatus.CREATED);
+    }
+
+}
+```
+
+__@RestController__ diz a aplicação que a nossa classe é um controlador Rest onde todo retorno será serializado e enviado pelo corpo das requisições HTTP <br><br>
+__@RequestMapping__ tem a finalidade de mapear requisições web
