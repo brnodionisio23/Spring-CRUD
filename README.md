@@ -47,7 +47,15 @@ spring.jpa.properties.hibernate.format_sql=true
 * __H2 CLIENT__ - Ativação do cliente e definindo em browser para facilitar acesso
 * __JPA__ - configuração do jpa onde gera tabelas automaticamente, configura para interagir com bando sql compativel com H2 e configuração para motrar os logs formatados de interações com o banco utilizado
 
-## Criando Model
+# Camadas
+Separamos nossa aplicação em diversas camadas agrupando as classes para facilitar o desenvolvimento e a manutenção da mesma.
+
+* __MODEL__ - (Entity) Camada de representação da tabela do banco de dados.
+* __REPOSITORY__ - Camada que funciona como ponte entre a aplicação e as tabelas do banco, utilizando JPA para realizar as interações.
+* __SERVICE__ - Camada que contem a lógica de negócio "o código em si".
+* __CONTROLLER__ - Responsável pelos endpoints (rotas) da aplicação.
+
+## Model
 O model (entities) é o modelo da nossa tabelo no banco
 
 * Sugestão de implementação
@@ -123,7 +131,7 @@ __@OneToMany__ Esta anotação é usada para especificar um relacionamento unidi
 __@ManyToOne__ Esta anotação é usada para especificar um relacionamento unidirecional de muitos para um entre duas entidades, onde várias entidades têm uma referência para uma entidade. Por exemplo, **vários alunos podem ter o mesmo professor**. <br><br>
 __@ManyToMany__ Esta anotação é usada para especificar um relacionamento bidirecional de muitos para muitos entre duas entidades, onde várias entidades têm referências para várias entidades. Por exemplo, **vários alunos podem ter vários professores**. <br> <br>
 
-## Criando Repository
+## Repository
 Essa camada tem a responsabilidade de ser a ponte entre a aplicação e o nosso banco de dados utilizando o JPA (Java Persistence Application) possuindo metodos de interação com a nossa tabela abstraindo toda a complexidade do JDBC
 
 ``` java
@@ -134,25 +142,66 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {}
 
 Para o JPA entrar em ação precisamos passar o __tipo do dado__, no caso nossa tabela, e o __tipo do identificador__ desse dado
 
-## Criação da camada Service
+## Service
 Esta camada é responsável pela lógica da aplicação
 
 ```java
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Service
-public class CategoryService {
+public class TodoService {
 
-    @Autowired
-    private CategoryRepository repository;
+  @Autowired
+  private TodoRepository repository;
+}
+```
+* Criando uma nova instancia do repositório refente podemos utilizar os métodos JPA em nossa aplicação.
 
-    public Category insert(Category obj){
+__@Autowired__ anotação do spring para injetar dependencias.
+
+```java
+public Todo save(Todo todo){
+    return repository.save(todo);
+}
+```
+O método __create__ salva um objeto na nossa tabela.
+
+```java
+public List<Todo> findAll(){
+    return repository.findAll();
+}
+```
+O método __findAll__ retorna uma List<> com todos os elementos da tabela.
+```java
+public Todo findById(Long id){
+    Optional<Todo> obj = repository.findById(id);
+    return obj.get();
+}
+```
+O método __findById__ recebe o id selecionado e o retorna, devemos tratar a excessão caso a função receba um id inválido.
+```java
+public Todo update(Long id, Todo todo) {
+    Optional<Todo> entity = repository.findById(id);
+
+    if (entity.isPresent()) {
+        Todo obj = entity.get();
+
+        obj.setTask(todo.getTask);
+        obj.setCategory(todo.getCategory);
+
         return repository.save(obj);
+    } else {
+        return null;
     }
 }
 ```
-
-* Criando uma nova instancia do repositório refente podemos utilizar os métodos JPA em nossa aplicação
-
-__@Autowired__ anotação do spring para injetar dependencias
+Para atualizarmos um dado existente primeiro devemos receber em nossa função o id do campo que queremos atualizar e o objeto com os novos dados, apois isso devemos verificar se a entidade existe e passar os novos dados a ela, caso contrário, lançar uma excessão.
+```java
+public void delete(Long id){
+    repository.findById(id).ifPresent(repository::delete);
+}
+```
+O método __delete__ buscamos o elemento a ser deletado e deletamos.
 
 ## Controller
 * Camada responsável pelos endpoints da nossa aplicação, são pontos de acesso para troca de dados na nossa aplicação entre diferentes serviços como por exemplo: cliente servidor.
